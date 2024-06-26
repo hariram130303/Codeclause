@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Prediction</title>
+    <!-- Link Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Add your custom CSS styles here -->
+    <style>
+        body {
+            background-image: url('https://th.bing.com/th/id/OIP.kwuHkY38J_gkUpz8puz1vAHaDd?w=350&h=163&c=7&r=0&o=5&dpr=1.5&pid=1.7');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            padding-top: 50px; /* Adjust for the fixed navbar */
+            color: #fff; /* Set text color to white */
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+        }
+        h1 {
+            text-align: center;
+            margin-top: 0;
+            color: #dc3545; /* Red text color */
+        }
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            margin-top: 20px;
+        }
+        label {
+            font-weight: bold;
+            color: #343a40; /* Dark gray text color */
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ced4da; /* Gray border */
+            border-radius: 5px;
+        }
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #007bff; /* Blue button */
+            color: #fff; /* White text color */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* Smooth transition */
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+        .prediction-text {
+            color: #dc3545; /* Red text color */
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 24px; /* Increase font size */
+            display: block; /* Display as block element */
+        }
+        .heart-icon {
+            color: #dc3545; /* Red color */
+            margin-right: 5px;
+        }
+        .error-message {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px; /* Increase font size */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="prediction-result">
+            {% if prediction_text %}
+                <p class="prediction-text"><i class="fas fa-heart heart-icon"></i>{{ prediction_text }}</p>
+            {% endif %}
+            {% if error_message %}
+                <p class="error-message">{{ error_message }}</p>
+            {% endif %}
+        </div>
+        <h1>Heart Disease Prediction</h1>
+        <form id="predictionForm" action="/predict" method="post">
+            <div class="form-group">
+                <label for="sysBP">Systolic Blood Pressure:</label>
+                <input type="number" class="form-control" id="sysBP" name="sysBP" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="BMI">BMI:</label>
+                <input type="number" class="form-control" id="BMI" name="BMI" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="totChol">Total Cholesterol:</label>
+                <input type="number" class="form-control" id="totChol" name="totChol" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" class="form-control" id="age" name="age" required>
+            </div>
+            <div class="form-group">
+                <label for="glucose">Glucose Level:</label>
+                <input type="number" class="form-control" id="glucose" name="glucose" step="0.01" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Predict</button>
+        </form>
+    </div>
+
+    <script>
+        // Check if there are stored values for input fields and populate them
+        window.onload = function() {
+            var sysBP = localStorage.getItem('sysBP');
+            var BMI = localStorage.getItem('BMI');
+            var totChol = localStorage.getItem('totChol');
+            var age = localStorage.getItem('age');
+            var glucose = localStorage.getItem('glucose');
+
+            if (sysBP) document.getElementById('sysBP').value = sysBP;
+            if (BMI) document.getElementById('BMI').value = BMI;
+            if (totChol) document.getElementById('totChol').value = totChol;
+            if (age) document.getElementById('age').value = age;
+            if (glucose) document.getElementById('glucose').value = glucose;
+        };
+
+        // Store values of input fields when form is submitted
+        document.getElementById('predictionForm').addEventListener('submit', function() {
+            localStorage.setItem('sysBP', document.getElementById('sysBP').value);
+            localStorage.setItem('BMI', document.getElementById('BMI').value);
+            localStorage.setItem('totChol', document.getElementById('totChol').value);
+            localStorage.setItem('age', document.getElementById('age').value);
+            localStorage.setItem('glucose', document.getElementById('glucose').value);
+        });
+    </script>
+</body>
+</html>
